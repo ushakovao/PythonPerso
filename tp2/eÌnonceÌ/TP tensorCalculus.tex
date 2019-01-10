@@ -1,0 +1,108 @@
+
+\documentclass{article}
+\input /Users/vigon/visible/MesRacoursis2015
+
+\def\dessin{\ \linebreak \vspace{0.5cm}  \linebreak  DESSIN  \vspace{1cm} \ \linebreak   }
+
+\def\argmax{\hb{argmax}}
+\def\argmin{\hb{argmin}}
+
+\title{Calcul tensoriel}
+
+
+
+\begin{document}
+
+
+\maketitle
+
+INB : l sera apprécié que les matrices dans votre rapport soient bien présentées : sous forme d'image (cf. les codes fournis) et/ou sous forme de sortie numpy bien arrondies.
+
+\section{Calcul tensoriel}
+
+
+Considérez les vecteurs \verb$a=np.array(range(4))$ et \verb$b=np.array(range(3))$. Calculez sans faire de boucle les tenseurs suivants.  
+\begin{itemize}
+\item $c_{ij} = a_i b_j $ (Aide : il faut glisser un indice en position 1 chez $a$ et un indice en position 0 chez $b$)
+\item $d_{ij}  = c_{ij} -a_i - a_j $
+\item $e_{ijk} = c_{ij} - d_{ik} $
+\item $\sum_{ik} e_{ijk}$
+\end{itemize}
+Pour la dernière, vous utiliserez que \verb$sum$ peut réduire plusieurs dimensions à la fois, mais attention, il faut mettre un t-uplet (et pas une liste), par exemple \verb$np.sum(e, [0,1])$
+
+
+Construisez des matrices carrées $a$ et $b$ puis calculez 
+\begin{itemize}
+\item $c_{ik}= \sum_j a_{ij} b_{jk}$
+\item $ c_{jk} = \sum_i a_{ij} b_{ik}$ 
+\end{itemize}
+On fera cela de deux manières différente : en utilisant \verb$np.matmul$ et $np.transpose$ et en utilisant \verb$expand_dim$ et le produit \verb$*$  (ou bien \verb$np.multiply$). 
+
+
+\section{Centrer réduire, corrélation}
+
+
+Considérons une matrice de shape $(n,p)$.  Chaque colonne correspondant à des caractéristiques d'un individu, chaque ligne correspondant à un individu. Par exemple les caractéristiques sont : 
+\begin{itemize}
+\item Colonne $p=0$, le poids. 
+\item Colonne $p=1$, la taille. 
+\item Colonne $p=1$, l'indice corporel. 
+\item Colonne $p=2$, la quantité de sang.  
+\item Colonne $p=3$, le nombre d'enfant. 
+\item Colonne $p=4$, le numéro de sécurité social. 
+\item Colonne $p=5$, le sexe (0=homme), (1=femme)
+\item Colonne $p=6$, le tour de taille.
+\item Colonne $p=6$, le tour de crane.
+\end{itemize}
+
+
+Ensuite, la ligne $n=0$ correspond aux caractéristiques de l'individu numéro 0, la ligne $n=1$ correspond aux caractéristiques de l'individu numéro 1 ... 
+
+
+Un tel tableau s'appelle  une "dataframe" et  la présentation ligne/colonne est toujours la même.  Ainsi, si une data-frame représente des individus tirés aléatoirement dans la population les lignes sont indépendantes mais pas forcément les colonnes.  
+
+Question : dans l'exemple ci-dessus, quelles sont les colonnes les plus corrélées entre elles ? Essayer de faire un dessin pour présenter ces correlations, toutes les présentations sont permise (graphique, flèches, arbres). 
+
+
+Construisons avec numpy une data-frame \verb$x$ toute simple.  
+\begin{verbatim}
+    sample_size=10
+    x0=np.random.random([sample_size])
+    x1=3*np.random.random([sample_size])
+    epsilon=0.1
+    x2=x0 +x1 +epsilon*np.random.random([sample_size])
+    x=np.transpose(np.array([x0,x1,x2]))
+\end{verbatim}
+Les lignes/colonnes sont-elles indépendantes ?
+
+On va dire que la première colonne réprésente l'age, la seconde la taille, et la troisième le poids. 
+\begin{itemize}
+\item Calculez les caractéristiques moyennes de cette dataframe (age moyen, taille moyenne, poids moyen). Utiliser \verb$np.mean$ ou bien \verb$np.sum$
+\item   Calculez les écart-types de cette dataframe. Utilisez \verb$np.std$, ou bien essayez sans, c'est un bon exercice. 
+\item Calculez la dataframe centrée-réduite (ex: la première colonne sera l'age centré réduit des individus). Utilisez ce que l'on a appris sur le calcul tensoriel pour éviter les boucles.  
+\item Calculer la matrice de corrélation de la dataframe de deux manière différente : 1/ avec \verb$np.corrcoef$ et 2/ en utilisant le travail précédent.   Interprétez ces coéfficient. 
+\end{itemize}
+
+
+N'hésitez pas à faire ce même travail avec une sconde dataframe issue de votre imagination. 
+
+
+
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
